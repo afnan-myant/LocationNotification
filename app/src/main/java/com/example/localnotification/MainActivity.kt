@@ -54,13 +54,13 @@ class MainActivity : AppCompatActivity() {
 
         NotificationUtils.scheduleIntervalNotification(this,"Interval notifition",  "This is Interval notifition",  10)
 
-        NotificationUtils.scheduleSpecificTimeNotification(this,"Spcific time notifition",  "This is specific time notifition", 14, 19)
-        NotificationUtils.scheduleIntervalRepeatNotification(this,"Repeat notifition",  "This is Repeat Interval notifition", 10 * 1000) // after each 10 seconds
-        NotificationUtils.scheduleImmediateNotification(this,"Immediate notifition",  "This is immediate notifition")
-        NotificationUtils.scheduleDailyRepeatNotification(this,"Daily Repeat notifition",  "This is Daily Interval notifition", 18, 9) // after each 10 seconds
-        NotificationUtils.scheduleWeekDayRepeatNotification(this,"Daily Repeat notifition",  "This is Daily Interval notifition", 17, 54) // after each 10 seconds
+//        NotificationUtils.scheduleSpecificTimeNotification(this,"Spcific time notifition",  "This is specific time notifition", 14, 19)
+//        NotificationUtils.scheduleIntervalRepeatNotification(this,"Repeat notifition",  "This is Repeat Interval notifition", 10 * 1000) // after each 10 seconds
+//        NotificationUtils.scheduleImmediateNotification(this,"Immediate notifition",  "This is immediate notifition")
+//        NotificationUtils.scheduleDailyRepeatNotification(this,"Daily Repeat notifition",  "This is Daily Interval notifition", 18, 9) // after each 10 seconds
+//        NotificationUtils.scheduleWeekDayRepeatNotification(this,"Daily Repeat notifition",  "This is Daily Interval notifition", 17, 54) // after each 10 seconds
 
-//        NotificationUtils.getAllNotificationList(this)
+        NotificationUtils.getAllNotificationList(this)
     }
 
 

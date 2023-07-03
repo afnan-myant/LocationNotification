@@ -1,5 +1,6 @@
 package com.example.localnotification
 
+import NotificationUtils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -22,12 +23,35 @@ class NotificationReceiver : BroadcastReceiver() {
     companion object {
         const val EXTRA_TITLE = "extra_title"
         const val EXTRA_MESSAGE = "extra_message"
+        const val EXTRA_NOTIFICATIONID = "extra_notification"
+        const val STRING_TITLE = "STRING_TITLE"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("On Receive" , "On Receive 1")
         val title = intent?.getStringExtra(EXTRA_TITLE)
         val message = intent?.getStringExtra(EXTRA_MESSAGE)
+        val not_key = intent?.getStringExtra(STRING_TITLE)
+        val not_value = intent?.getIntExtra(EXTRA_NOTIFICATIONID, -1)
+        Log.d("not_id", "" + not_value)
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val myValue = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", 100)
+
+        Log.d("here is shared prefrences", "" + myValue)
+        val editor = sharedPref?.edit()
+
+        editor?.remove(not_key)
+        editor?.apply()
+        Log.d("removed prefernceeessssss", "" + not_value.toString())
+
+        val sharedPref2 = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val myValue2 = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", 100)
+
+        Log.d("now it looks like thisssss", "" + myValue2)
+
+        if (context != null) {
+            NotificationUtils.getAllNotificationList(context)
+        }
 
         if (context != null && title != null && message != null) {
 //            showNotification(context, title, message)

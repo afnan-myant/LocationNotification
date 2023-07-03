@@ -1,24 +1,24 @@
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.util.Log
 import com.example.localnotification.NotificationReceiver
 import java.util.*
+import android.content.SharedPreferences
 
 object NotificationUtils {
 
     private const val TAG = "NotificationUtils"
+    private var mContext: Context? = null
 
-    private const val INTERVAL_NOTIFICATION_ID = 0
+    private const val INTERVAL_NOTIFICATION_ID = 111
     private const val SPECIFIC_TIME_NOTIFICATION_ID = 1
     private const val REPEAT_INTERVAL_NOTIFICATION_ID = 2
     private const val IMMEDIATE_NOTIFICATION_ID = 3
     private const val DAILY_REPEAT_NOTIFICATION_ID = 4
     private const val WEEK_DAY_REPEAT_NOTIFICATION_ID = 5
-
-
-
 
     fun scheduleIntervalNotification(context: Context, title: String, message: String,  timeInterval: Int  ){
 
@@ -31,6 +31,8 @@ object NotificationUtils {
         val intent = Intent(context, NotificationReceiver::class.java)
         intent.putExtra(NotificationReceiver.EXTRA_TITLE, title)
         intent.putExtra(NotificationReceiver.EXTRA_MESSAGE, message)
+        intent.putExtra(NotificationReceiver.EXTRA_NOTIFICATIONID, INTERVAL_NOTIFICATION_ID)
+        intent.putExtra(NotificationReceiver.STRING_TITLE, "INTERVAL_NOTIFICATION_ID")
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -38,6 +40,10 @@ object NotificationUtils {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("INTERVAL_NOTIFICATION_ID", INTERVAL_NOTIFICATION_ID)
+        editor?.apply()
 
         // Schedule the notification using AlarmManager
         alarmManager.setExact(
@@ -67,6 +73,10 @@ object NotificationUtils {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("SPECIFIC_TIME_NOTIFICATION_ID", SPECIFIC_TIME_NOTIFICATION_ID)
+        editor?.apply()
+
         // Schedule the notification using AlarmManager
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
@@ -93,6 +103,10 @@ object NotificationUtils {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("REPEAT_INTERVAL_NOTIFICATION_ID", REPEAT_INTERVAL_NOTIFICATION_ID)
+        editor?.apply()
 
         // Schedule the notification using AlarmManager
         alarmManager.setInexactRepeating(
@@ -123,6 +137,10 @@ object NotificationUtils {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("DAILY_REPEAT_NOTIFICATION_ID", DAILY_REPEAT_NOTIFICATION_ID)
+        editor?.apply()
 
         // Schedule the notification using AlarmManager
         alarmManager.setInexactRepeating(
@@ -165,6 +183,10 @@ object NotificationUtils {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("WEEK_DAY_REPEAT_NOTIFICATION_ID", WEEK_DAY_REPEAT_NOTIFICATION_ID)
+        editor?.apply()
+
         // Schedule the notification using AlarmManager
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
@@ -192,6 +214,10 @@ object NotificationUtils {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val editor: SharedPreferences.Editor = context.getSharedPreferences("Local_Not", MODE_PRIVATE)?.edit()!!
+        editor?.putInt("IMMEDIATE_NOTIFICATION_ID", IMMEDIATE_NOTIFICATION_ID)
+        editor?.apply()
+
         // Schedule the notification using AlarmManager
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
@@ -210,6 +236,12 @@ object NotificationUtils {
 //        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //        if (pendingIntent != null)
 //            alarmManager.cancel(pendingIntent);
+
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val myValue = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", 100)
+
+        Log.d("hi there looking for shred", "" + myValue)
+
 
     }
 
