@@ -44,11 +44,6 @@ class NotificationReceiver : BroadcastReceiver() {
         editor?.apply()
         Log.d("removed prefernceeessssss", "" + not_value.toString())
 
-        val sharedPref2 = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
-        val myValue2 = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", 100)
-
-        Log.d("now it looks like thisssss", "" + myValue2)
-
         if (context != null) {
             NotificationUtils.getAllNotificationList(context)
         }

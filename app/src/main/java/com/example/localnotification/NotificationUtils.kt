@@ -53,6 +53,39 @@ object NotificationUtils {
         )
     }
 
+    fun cancelScheduledNotification(context: Context, title: String, Identifier: Int){
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        Log.d(TAG , "cancel notification " + "" + Identifier)
+        var calendar = Calendar.getInstance()
+        calendar.add(Calendar.SECOND, timeInterval)
+        // Create an intent for the notification
+        val intent = Intent(context, NotificationReceiver::class.java)
+//        intent.putExtra(NotificationReceiver.EXTRA_TITLE, title)
+//        intent.putExtra(NotificationReceiver.EXTRA_MESSAGE, message)
+//        intent.putExtra(NotificationReceiver.EXTRA_NOTIFICATIONID, INTERVAL_NOTIFICATION_ID)
+//        intent.putExtra(NotificationReceiver.STRING_TITLE, "INTERVAL_NOTIFICATION_ID")
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            Identifier,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val editor = sharedPref?.edit()
+
+        editor?.remove(title)
+        editor?.apply()
+        Log.d("removed prefernceeessssss", "" + title)
+
+        alarmManager.cancel(pendingIntent)
+
+        getAllNotificationList(context)
+    }
+
     fun scheduleSpecificTimeNotification(context: Context, title: String, message: String, hour: Int, minute: Int  ){
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -238,7 +271,7 @@ object NotificationUtils {
 //            alarmManager.cancel(pendingIntent);
 
         val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
-        val myValue = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", 100)
+        val myValue = sharedPref?.getInt("INTERVAL_NOTIFICATION_ID", -1)
 
         Log.d("hi there looking for shred", "" + myValue)
 

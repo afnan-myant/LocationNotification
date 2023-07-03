@@ -1,6 +1,5 @@
 package com.example.localnotification
 
-import android.app.*
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -9,14 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.localnotification.databinding.ActivityMainBinding
-import android.content.Context
-import androidx.core.app.NotificationCompat
-import android.os.Build
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.util.Log
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
 import androidx.core.app.ActivityCompat
@@ -52,8 +45,8 @@ class MainActivity : AppCompatActivity() {
 
         setupPermissions()
 
-        NotificationUtils.scheduleIntervalNotification(this,"Interval notifition",  "This is Interval notifition",  10)
-
+        NotificationUtils.scheduleIntervalNotification(this,"Interval notifition",  "This is Interval notifition",  1000)
+        NotificationUtils.cancelScheduledNotification(this, "INTERVAL_NOTIFICATION_ID", 111 )
 //        NotificationUtils.scheduleSpecificTimeNotification(this,"Spcific time notifition",  "This is specific time notifition", 14, 19)
 //        NotificationUtils.scheduleIntervalRepeatNotification(this,"Repeat notifition",  "This is Repeat Interval notifition", 10 * 1000) // after each 10 seconds
 //        NotificationUtils.scheduleImmediateNotification(this,"Immediate notifition",  "This is immediate notifition")
