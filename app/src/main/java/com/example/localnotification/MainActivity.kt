@@ -45,8 +45,11 @@ class MainActivity : AppCompatActivity() {
 
         setupPermissions()
 
-        NotificationUtils.scheduleIntervalNotification(this,"Interval notifition",  "This is Interval notifition",  1000)
-        NotificationUtils.cancelScheduledNotification(this, "INTERVAL_NOTIFICATION_ID", 111 )
+        NotificationUtils.scheduleIntervalNotification(this,"Interval notifition",  "This is Interval notifition",  10)
+//        NotificationUtils.cancelScheduledNotification(this, "INTERVAL_NOTIFICATION_ID", 111 )
+//        NotificationUtils.cancelAllScheduledNotification(this)
+//        NotificationUtils.getSpecificNotification(this, "INTERVAL_NOTIFICATION_ID")
+//          NotificationUtils.isNotificationScheduled(this, "INTERVAL_NOTIFICATION_ID")
 //        NotificationUtils.scheduleSpecificTimeNotification(this,"Spcific time notifition",  "This is specific time notifition", 14, 19)
 //        NotificationUtils.scheduleIntervalRepeatNotification(this,"Repeat notifition",  "This is Repeat Interval notifition", 10 * 1000) // after each 10 seconds
 //        NotificationUtils.scheduleImmediateNotification(this,"Immediate notifition",  "This is immediate notifition")

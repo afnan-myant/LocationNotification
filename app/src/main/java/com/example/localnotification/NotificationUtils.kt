@@ -20,6 +20,16 @@ object NotificationUtils {
     private const val DAILY_REPEAT_NOTIFICATION_ID = 4
     private const val WEEK_DAY_REPEAT_NOTIFICATION_ID = 5
 
+    private val dictionary: Map<String, Int> = mapOf(
+        "INTERVAL_NOTIFICATION_ID" to 1,
+        "INTERVAL_NOTIFICATION_ID" to 111,
+        "SPECIFIC_TIME_NOTIFICATION_ID" to 1,
+        "REPEAT_INTERVAL_NOTIFICATION_ID" to 2,
+        "IMMEDIATE_NOTIFICATION_ID" to 3,
+        "DAILY_REPEAT_NOTIFICATION_ID" to 4,
+        "WEEK_DAY_REPEAT_NOTIFICATION_ID" to 5
+    )
+
     fun scheduleIntervalNotification(context: Context, title: String, message: String,  timeInterval: Int  ){
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -58,14 +68,8 @@ object NotificationUtils {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         Log.d(TAG , "cancel notification " + "" + Identifier)
-        var calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, timeInterval)
         // Create an intent for the notification
         val intent = Intent(context, NotificationReceiver::class.java)
-//        intent.putExtra(NotificationReceiver.EXTRA_TITLE, title)
-//        intent.putExtra(NotificationReceiver.EXTRA_MESSAGE, message)
-//        intent.putExtra(NotificationReceiver.EXTRA_NOTIFICATIONID, INTERVAL_NOTIFICATION_ID)
-//        intent.putExtra(NotificationReceiver.STRING_TITLE, "INTERVAL_NOTIFICATION_ID")
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -83,7 +87,61 @@ object NotificationUtils {
 
         alarmManager.cancel(pendingIntent)
 
-        getAllNotificationList(context)
+        Log.d("cancelled alarm manager", "" + title)
+    }
+
+    fun cancelAllScheduledNotification(context: Context){
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val allValues: Map<String, *> = sharedPref?.all as Map<String, *>
+        val keyList: List<String> = allValues.keys.toList()
+        val editor = sharedPref?.edit()
+        val intent = Intent(context, NotificationReceiver::class.java)
+
+        for (key in keyList) {
+            Log.d("remove000dKey", "Key: $key, Value: ${sharedPref.all[key]}")
+
+            editor?.remove(key)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                sharedPref.all[key] as Int,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            alarmManager.cancel(pendingIntent)
+            Log.d("remove111dKey", "Key: $key, Value: ${sharedPref.all[key]}")
+        }
+        editor?.apply()
+        Log.d("remov2222edKey", "changes applied")
+
+    }
+
+    fun getAllNotificationIdentifiers(context: Context): List<String> {
+
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val allValues: Map<String, *> = sharedPref?.all as Map<String, *>
+        val keyList: List<String> = allValues.keys.toList()
+
+        return keyList
+
+    }
+
+    fun isNotificationScheduled(context: Context, title: String): Boolean {
+
+        val sharedPref = context?.getSharedPreferences("Local_Not", Context.MODE_PRIVATE)
+        val allValues: Map<String, *> = sharedPref?.all as Map<String, *>
+        val keyList: List<String> = allValues.keys.toList()
+
+        val isScheduled = keyList.contains(title)
+
+        if (isScheduled) {
+            return true
+        } else {
+            return false
+        }
+
     }
 
     fun scheduleSpecificTimeNotification(context: Context, title: String, message: String, hour: Int, minute: Int  ){
